@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +15,21 @@
             <div class="toggle">
                 <img src="../assets/images/sidebar-collapse.png" alt="collapse" id="collapseBtn">
             </div>
-            <div class="title">
+            <div class="viewsTitle">
+                <p>Views</p>
+            </div>
+            <div class="views">
+                <div class="view activeView">
+                    <p>All Projects</p>
+                </div>
+                <div class="view">
+                    <p>Today</p>
+                </div>
+            </div>
+            <div class="projectsTitle">
                 <p>Projects</p>
             </div>
-            <div class="top">
+            <div class="projects">
                 <div class="project">
                     <p>Personal</p>
                 </div>
@@ -36,25 +48,202 @@
                 <div class="project">
                     <p>School</p>
                 </div>
+                <div class="project">
+                    <p>School</p>
+                </div>
+                <div class="project">
+                    <p>School</p>
+                </div>
+                <div class="project">
+                    <p>School</p>
+                </div>
+                <div class="project">
+                    <p>School</p>
+                </div>
+
             </div>
-            <div class="projectPrompt">
-                <input type="text" name="projectName" id="projectName">
-                <div class="confirmBtns">
-                    <div class="confirm">
-                        <i class="bx bx-check"></i>
-                    </div>
-                    <div class="decline">
-                        <i class="bx bx-x"></i>
+            <div class="bottom">
+                <div class="projectPrompt">
+                    <input type="text" name="projectName" id="projectName">
+                    <div class="confirmBtns">
+                        <div class="confirm">
+                            <i class="bx bx-check"></i>
+                        </div>
+                        <div class="decline">
+                            <i class="bx bx-x"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="newProject">
-                <i class="bx bx-plus"></i>
-                <span>New Project</span>
+
+                <div class="newProject">
+                    <i class="bx bx-plus"></i>
+                    <span>New Project</span>
+                </div>
             </div>
         </div>
         <div class="main">
+            
+            <!-- Project - VIEW -->
+            <div class="contentTitle">
+                <p>Personal</p>
+            </div>
+            <ul class="todoList">
+                <li class="todoItem checked">
+                    <input type="checkbox" name="done" id="done">
+                    <div class="todoItemInfo">
+                        <p>Call mom</p>
+                    </div>
+                </li>
+                <li class="todoItem">
+                    <input type="checkbox" name="done" id="done">
+                    <div class="todoItemInfo">
+                        <p>Call mom</p>
+                    </div>
+                </li>
+                <li class="todoItem">
+                    <input type="checkbox" name="done" id="done">
+                    <div class="todoItemInfo">
+                        <p>Call mom</p>
+                    </div>
+                </li>
+                <li class="todoItem">
+                    <input type="checkbox" name="done" id="done">
+                    <div class="todoItemInfo">
+                        <p>Call mom</p>
+                    </div>
+                </li>
+                
+                <li class="todoItem">
+                    <input type="checkbox" name="done" id="done">
+                    <div class="todoItemInfo">
+                        <p>Call mom</p>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="newItem">
+                <i class="bx bx-plus"></i>
+                <p>New Item</p>
+            </div>
+
+           
+            <!-- Today - VIEW -->
+            <!-- <div class="contentTitle">
+                <p>Today</p>
+            </div>
+            <div class="projectCard">
+                <div class="title">
+                    Personal
+                </div>
+                <ul class="todoList">
+                    <li class="todoItem checked">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="projectCard">
+                <div class="title">
+                    Personal
+                </div>
+                <ul class="todoList">
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                </ul>
+            </div> -->
+
+
+            <!-- All Projects - VIEW -->
+            <!-- <div class="contentTitle">
+                <p>All Projects</p>
+            </div>
+
+            <div class="projectCard">
+                <div class="title">
+                    Personal
+                </div>
+                <ul class="todoList">
+                    <li class="todoItem checked">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="projectCard">
+                <div class="title">
+                    Personal
+                </div>
+                <ul class="todoList">
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                    <li class="todoItem">
+                        <input type="checkbox" name="done" id="done">
+                        <div class="todoItemInfo">
+                            <p>Call mom</p>
+                        </div>
+                    </li>
+                </ul>
+            </div> -->
+        </div>
+
+        <div class="newItemPopup">
+                
         </div>
     </div>
 </body>
+
 </html>
