@@ -114,7 +114,8 @@ body {
     background-color: var(--highlight-color);
 }
 
-.activeView {
+.activeView,
+.activeProject {
     background-color: var(--highlight-color);
 }
 
@@ -208,8 +209,6 @@ li {
 
 input[type="checkbox"]{
     width: 1.25rem;
-    background-color: #eee;
-    color: green;
 }
 
 .todoItem {
@@ -222,6 +221,8 @@ input:checked ~ .todoItemInfo {
 }
 
 .todoItemInfo {
+    display: flex;
+    justify-content: space-between;
     flex: 1;
     padding: .5rem;
     border-radius: .25rem;
@@ -231,6 +232,11 @@ input:checked ~ .todoItemInfo {
     background-color: var(--divider-color);
 }
 
+.todoItemInfo > p:last-child {
+    color: var(--secondary-text-color);
+}
+
+
 .projectPrompt {
     display: flex;
     gap: 1rem;
@@ -239,6 +245,10 @@ input:checked ~ .todoItemInfo {
     padding: 0 .5rem;
     text-align: center;
     margin-top: auto;
+    transition: all 0s ease;
+    /* opacity: 0; */
+    /* visibility: hidden; */
+    /* height: 0; */
 }
 
 .confirmBtns {
@@ -261,7 +271,7 @@ input:checked ~ .todoItemInfo {
 }
 
 
-input {
+input, textarea {
     color: var(--primary-bg-color);
     padding: .5rem;
     border-radius: .5rem;
@@ -284,12 +294,87 @@ input {
     border-radius: .5rem;
 }
 
+
+
+
 .newItemPopup {
-    width: 500px;
-    height: 500px;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    background-color: transparent;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.popupForm {
+    width: 50vw;
+    background-color: var(--sidebar-bg-color);
+    padding: 2rem;
+    padding-top: 1rem;
+    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.6), 
+                0 6px 20px 0 rgba(0, 0, 0, 0.6);
+
+}
+
+.formItems {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+
+
+.formItems > label{
+    grid-column: 1 / span 1;
+}
+
+.formItems > input,
+.formItems > textarea {
+    grid-column: 2 / span 3;
+}
+
+textarea {
+    height: 5rem;
+    resize: none;
+}
+
+.inputItem {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.inputItem > input,
+.inputItem > textarea {
+    flex: 1
+}
+
+.formBtns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+    grid-column: 1 / -1;
+}
+
+button {
+    font-size: 1.5rem;
+    background-color: transparent;
+    border: 2px solid var(--divider-color);
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: var(--divider-color);
     background-color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    color: black;
 }
