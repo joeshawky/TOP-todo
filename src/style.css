@@ -9,7 +9,9 @@
     color: var(--primary-text-color);
     /* font-family: Roboto; */
     font-family: "Kumbh Sans";
-    transition: all 0.5s ease;
+    /* transition: rotate 0.5s ease, width 0.5s ease, opacity 0.5s ease; */
+    /* transition: width 0.5s ease; */
+    /* transition: all 0.5s ease; */
 
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -33,6 +35,57 @@
     --sidebar-secondary-text-side: 1rem;
 }
  
+/* ANIMATIONS */
+.main,
+.sidebar.active + .main {
+    transition: left 0.5s ease, width 0.5s ease;
+}
+
+#collapseBtn {
+    transition: rotate 0.5s ease;
+}
+
+.sidebar,
+.sidebar.active {
+    transition: width 0.5s ease;
+}
+
+
+.sidebar > * {
+    transition: opacity 0.25s ease .25s, width 0.5s ease;
+} 
+
+.sidebar.active > *:not(:first-child) {
+    transition: opacity .1s ease;
+} 
+
+.newItemPopup.show,
+.newItemPopup.hide{
+                transition: opacity .5s ease,
+                            visibility .5s ease;
+} 
+
+
+.projectPrompt.show {
+    transition: opacity 0.5s ease, visibility 0.5s ease
+}
+
+.projectPrompt.hide {
+    transition: opacity 0.5s ease, visibility 0.5s ease, max-height 0s ease 0.5s;
+}
+
+button,
+button:hover {
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+div,
+.confirmBtns > div:hover {
+    transition: background-color 0.25s ease;
+} 
+
+
+
 body {
     background-color: var(--primary-bg-color);
 }
@@ -93,7 +146,6 @@ body {
 }
 
 .sidebar.active > *:not(:first-child) {
-    transition: none;
     opacity: 0;
 }
 
@@ -154,7 +206,6 @@ body {
 
 #collapseBtn {
     width: 2rem;
-    transition: all 0.5s ease;
 }
 
 .sidebar.active #collapseBtn {
@@ -171,6 +222,7 @@ body {
     padding: 4rem;
     padding-right: 1rem;
     height: 100vh;
+    overflow-y: scroll;
 } 
 
 .sidebar.active ~.main {
@@ -245,12 +297,22 @@ input:checked ~ .todoItemInfo {
     padding: 0 .5rem;
     text-align: center;
     margin-top: auto;
-    transition: all 0s ease;
-    /* opacity: 0; */
-    /* visibility: hidden; */
-    /* height: 0; */
+    opacity: 0;
+    visibility: hidden;
 }
 
+
+.projectPrompt.show {
+    opacity: 1;
+    visibility: visible;
+    max-height: 200px;
+}
+
+.projectPrompt.hide {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+}
 .confirmBtns {
     display: flex;
     gap: .25rem;
@@ -286,16 +348,13 @@ input, textarea {
     gap: .5rem;
     align-items: center;
     padding: .5rem 1rem;
+    border-radius: .5rem;
+    cursor: pointer;
 }
 
 .newItem:hover {
     background-color: var(--divider-color);
-    cursor: pointer;
-    border-radius: .5rem;
 }
-
-
-
 
 .newItemPopup {
     width: 100vw;
@@ -305,6 +364,16 @@ input, textarea {
     align-items: center;
     backdrop-filter: blur(10px);
     background-color: transparent;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.newItemPopup.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.newItemPopup.hide {
     visibility: hidden;
     opacity: 0;
 }
@@ -335,7 +404,8 @@ input, textarea {
 }
 
 .formItems > input,
-.formItems > textarea {
+.formItems > textarea,
+.formItems > select {
     grid-column: 2 / span 3;
 }
 
@@ -351,7 +421,8 @@ textarea {
 }
 
 .inputItem > input,
-.inputItem > textarea {
+.inputItem > textarea,
+.inputItem > select {
     flex: 1
 }
 
@@ -377,4 +448,16 @@ button:hover {
     background-color: var(--divider-color);
     background-color: white;
     color: black;
+}
+
+select {
+    color: black;
+    padding: .5rem;
+    border-radius: .5rem;
+    font-size: 1rem;
+}
+
+select > option {
+    color: black;
+    font-size: 1rem;
 }

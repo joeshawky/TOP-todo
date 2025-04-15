@@ -31,7 +31,7 @@
                 <p>Projects</p>
             </div>
             <div class="projects">
-                <div class="project">
+                <!-- <div class="project">
                     <p>Personal</p>
                 </div>
                 <div class="project">
@@ -63,10 +63,10 @@
                 </div>
                 <div class="project">
                     <p>School</p>
-                </div>
+                </div> -->
             </div>
             <div class="bottom">
-                <div class="projectPrompt">
+                <div class="projectPrompt hide" style="opacity: 0;">
                     <input type="text" name="projectName" id="projectName">
                     <div class="confirmBtns">
                         <div class="confirm">
@@ -85,185 +85,29 @@
             </div>
         </div>
         <div class="main">
-            <!-- Project - VIEW -->
-            <div class="contentTitle">
-                <p>Project</p>
-            </div>
-            <div class="projectCard">
-                <div class="title">
-                    Personal
-                </div>
-                <ul class="todoList">
-                    <li class="todoItem checked">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                            <p>01/04/2025</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                            <p>01/04/2025</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                            <p>01/04/2025</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                            <p>01/04/2025</p>
-                        </div>
-                    </li>
-                    
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                            <p>01/04/2025</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
             <div class="newItem">
                 <i class="bx bx-plus"></i>
                 <p>New Item</p>
             </div>
-
-           
-            <!-- Today - VIEW -->
-            <!-- <div class="contentTitle">
-                <p>Today</p>
-            </div>
-            <div class="projectCard">
-                <div class="title">
-                    Personal
-                </div>
-                <ul class="todoList">
-                    <li class="todoItem checked">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="projectCard">
-                <div class="title">
-                    Personal
-                </div>
-                <ul class="todoList">
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                </ul>
-            </div> -->
-
-
-            <!-- All Projects - VIEW -->
-            <!-- <div class="contentTitle">
-                <p>All Projects</p>
-            </div>
-
-            <div class="projectCard">
-                <div class="title">
-                    Personal
-                </div>
-                <ul class="todoList">
-                    <li class="todoItem checked">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="projectCard">
-                <div class="title">
-                    Personal
-                </div>
-                <ul class="todoList">
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                    <li class="todoItem">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>Call mom</p>
-                        </div>
-                    </li>
-                </ul>
-            </div> -->
         </div>
 
-        <div class="newItemPopup">
+        <div class="newItemPopup hide" style="opacity: 0;">
             <div class="popupForm">
                 <div class="formTitle">
-                    <h1>Todo Information</h1>
+                    <h1 id="popupTitle">Todo Information</h1>
                 </div>
                 <form class="formItems">
+                    <input type="text" name="todoId" id="todoId" hidden>
                     <label for="todoTitle">Title</label>
                     <input type="text" name="todoTitle" id="todoTitle" placeholder="title..." required>
                     <label for="todoDescription">Description</label>
                     <textarea type="text" name="todoDescription" id="todoDescription" placeholder="description..." required></textarea>
                     <label for="todoDate">Deadline</label>
                     <input type="date" name="todoDate" id="todoDate" required>
+                    <label for="project">Project</label>
+                    <select name="projectId" id="projectId" required>
+                        <option value="" disabled selected hidden>Select project</option>
+                    </select>
                     <div class="formBtns">
                         <button id="cancelBtn" type="button">Cancel</button>
                         <button id="submitBtn">Submit</button>
