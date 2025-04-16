@@ -1,4 +1,5 @@
 import projectManager from './Project'
+import todoManager from './Todo'
 
 const View = (() => {
     const projectsSection = document.querySelector('.projects')
@@ -7,7 +8,6 @@ const View = (() => {
         projectsSection.innerHTML = '';
 
         const projects = projectManager.getAllProjects()
-        console.log(projects);
 
         projects.forEach(p => {
             const div = document.createElement('div')
@@ -17,182 +17,136 @@ const View = (() => {
             const paragraph = document.createElement('p')
             paragraph.innerText = p.title
 
-            div.appendChild(paragraph)
+            const button = document.createElement('button')
+            button.innerText = 'X'
+            button.classList.add('removeProject')
+            button.setAttribute('projectId', p.id)
+
+            div.append(paragraph, button)
             projectsSection.appendChild(div)
         })
     };
 
-    const clearContent = () => {
-        const mainDiv = document.querySelector('.main')
-        while (!mainDiv.firstElementChild.classList.contains('newItem')) {
-            mainDiv.removeChild(mainDiv.firstElementChild);
-        }
-    }
     const renderContent = () => {
-        clearContent();
-        const activeElement = document.querySelector('.activeView')
-        if (!activeElement) {
-            return;
-        }
         const mainDiv = document.querySelector('.main')
-        const viewTitle = activeElement.textContent.trim()
-        if (viewTitle === "All Projects") {
-            const projects = projectManager.getAllProjects()
-            let html = `<div class="contentTitle">
-                <p>${viewTitle}</p>
-            </div>`
-            projects.forEach(p => {
-                html += `<div class="projectCard">
-                <div class="title">
-                    ${p.title}
-                </div>
-                <ul class="todoList">`
+        mainDiv.innerHTML = ''
 
-                p.todoItems.forEach(item => {
-                    html += `<li class="todoItem checked">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo" todoId=${item.id}>
-                            <p>${item.title}</p>
-                            <p>${item.dueDate}</p>
-                        </div>
-                    </li>`
-                })
+        const activeElement = document.querySelector('.activeView')
+        if (!activeElement) return;
+        
+        const viewTitle = activeElement.querySelector('p').textContent.trim()
 
-                html += `</ul>
-            </div>`
-            })
+        const allProjectsView = viewTitle === "All Projects"
+        const todayProjectsView = viewTitle === "Today";
 
-            html += `<div class="newItem">
-                <i class="bx bx-plus"></i>
-                <p>New Item</p>
-            </div>`
-            
-            mainDiv.innerHTML = html
-            const newTodoBtn = document.querySelector('.newItem')
-            console.log(`tOODO BTN :${newTodoBtn}`);
-            newTodoBtn.addEventListener('click', handleNewTodoClick)
-            newTodoBtn.addEventListener('click', () => console.log("CLICKED"))
-
-        } else if (viewTitle === "Today") {
-            const projects = projectManager.getAllProjectsDueToday()
-            console.log(projects);
-            let html = `<div class="contentTitle">
-                <p>${viewTitle}</p>
-            </div>`
-            projects.forEach(p => {
-                html += `<div class="projectCard">
-                <div class="title">
-                    ${p.title}
-                </div>
-                <ul class="todoList">`
-
-                p.todoItems.forEach(item => {
-                    html += `<li class="todoItem checked">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo" todoId=${item.id}>
-                            <p>${item.title}</p>
-                            <p>${item.dueDate}</p>
-                        </div>
-                    </li>`
-                })
-
-                html += `</ul>
-            </div>`
-            })
-
-            html += `<div class="newItem">
-                <i class="bx bx-plus"></i>
-                <p>New Item</p>
-            </div>`
-            
-            mainDiv.innerHTML = html
-            const newTodoBtn = document.querySelector('.newItem')
-            console.log(`tOODO BTN :${newTodoBtn}`);
-            newTodoBtn.addEventListener('click', handleNewTodoClick)
-            newTodoBtn.addEventListener('click', () => console.log("CLICKED"))
-
-        }else {
-            console.log("ELSE VIEW");
+        let projects;
+        if (allProjectsView) {
+            projects = projectManager.getAllProjects()
+        } else if (todayProjectsView) {
+            projects = projectManager.getAllProjectsDueToday()
+        } else {
             const projectId = activeElement.getAttribute('projectId')
-            const todos = projectManager.getTodosByProjectId(projectId)
-            let html = `<div class="contentTitle">
-                <p>Project content</p>
-            </div>
-            <div class="projectCard">
-                <div class="title">
-                    ${viewTitle}
-                </div>
-                <ul class="todoList">`
-
-            todos.forEach(todo => {
-                html += `<li class="todoItem checked">
-                        <input type="checkbox" name="done" id="done">
-                        <div class="todoItemInfo">
-                            <p>${todo.title}</p>
-                            <p>01/04/2025</p>
-                        </div>
-                    </li>`
-            })
-            html += `</ul>
-            </div>
-            <div class="newItem">
-                <i class="bx bx-plus"></i>
-                <p>New Item</p>
-            </div>`
-            
-            mainDiv.innerHTML = html
-            const newTodoBtn = document.querySelector('.newItem')
-            newTodoBtn.addEventListener('click', handleNewTodoClick)
+            projects = [projectManager.getProjectById(projectId)]
         }
 
+        mainDiv.innerHTML = contentHtml(viewTitle, projects)
+        const newTodoBtn = document.querySelector('.newItem')
+        newTodoBtn.addEventListener('click', handleNewTodoClick)
         initTodoEventHandlers()
+    }
+
+    const contentHtml = (pageTitle, projects) => {
+        let html = contentTitleDivHtml(pageTitle)
+        projects.forEach(p => {
+            html += projectHtml(p.title, p.todoItems)
+        })
+        html += newTodoBtnHtml()
+        return html;
+    }
+    const contentTitleDivHtml = (pageTitle) => {
+        return `<div class="contentTitle">
+                <p>${pageTitle}</p>
+            </div>`
+    }
+    const newTodoBtnHtml = () => {
+        return `<div class="newItem">
+            <i class="bx bx-plus"></i>
+                <p>New Item</p>
+            </div>`
+    }
+
+    const projectHtml = (projectTitle, todoItems) => {
+        let html = `<div class="projectCard">
+                <div class="title">
+                    ${projectTitle}
+                </div>
+                <ul class="todoList">`
+
+        todoItems.forEach(todo => {
+            html += todoHtml(todo.id, todo.title, todo.dueDate, todo.completed)
+        })
+
+        html += `</ul>
+            </div>`
+
+        return html;
+    }
+
+    const todoHtml = (todoId, todoTitle, todoDueDate, completed) => {
+        return `<li class="todoItem">
+                <input todoId=${todoId} class="completedCheckboxes" type="checkbox" name="done" id="done" ${completed ? 'checked' : ''}>
+                <div class="todoItemInfo" todoId=${todoId}>
+                <p>${todoTitle}</p>
+                    <div class="dateAndBtn">
+                        <p>${todoDueDate}</p>
+                        <button class="removeTodo" todoId=${todoId}>X</button>
+                    </div>
+                </div>
+            </li>`
     }
 
     const initTodoEventHandlers = () => {
         const todos = document.querySelectorAll('.todoItemInfo')
         todos.forEach(todo => todo.addEventListener('click', handleTodoInfoClick))
+
+        const projectRemoveBtns = document.querySelectorAll('.removeTodo')
+        projectRemoveBtns.forEach(btn => btn.addEventListener('click', handleTodoRemoveClick))
+
+        const checkboxes = document.querySelectorAll('.completedCheckboxes')
+        checkboxes.forEach(cb => cb.addEventListener('change', handleCompletedStateChange))
     }
 
     const handleTodoInfoClick = (e) => {
-        console.log("CLICKED ");
         const todoId = e.currentTarget.getAttribute('todoId');
 
         openEditTodoPage(todoId)
     }
 
-    const assignValuesToForm = (todoId) => {
-        const popupTitle = document.querySelector('#popupTitle')
-        popupTitle.innerText = "Update todo"
-        const submitBtn = document.querySelector('#submitBtn')
-        submitBtn.innerText = "Modify"
-        const idInput = document.querySelector('#todoId')
-        idInput.value = todoId
+    const populateFormFields = ({ id = '', title = '', description = '', dueDate = '', projectId = '' }) => {
+        document.querySelector('#todoId').value = id;
+        document.querySelector('#todoTitle').value = title;
+        document.querySelector('#todoDescription').value = description;
+        document.querySelector('#todoDate').value = dueDate;
 
-        const {id, description, title, projectId, dueDate} = projectManager.getTodosById(todoId)
+        populateProjectOptions();
+        const projectSelect = document.querySelector('#projectId');
+        const options = projectSelect.querySelectorAll('option');
 
-        const todoTitleElem = document.querySelector('#todoTitle')
-        todoTitleElem.value = title
-        const todoDescriptionElem = document.querySelector('#todoDescription')
-        todoDescriptionElem.value = description
-        const todoDateElem = document.querySelector('#todoDate')
-        todoDateElem.value = dueDate
-
-        populateProjectOptions()
-        const todoProjectElem = document.querySelector('#projectId')
-        const projectOptions = todoProjectElem.querySelectorAll('option')
-        projectOptions.forEach(po => {
-            console.log(projectOptions);
-            if (po.value === projectId)
-                po.setAttribute('selected', '')
-            else
-                po.removeAttribute('selected')
-        })
+        options.forEach(opt => {
+            if (opt.value === projectId) {
+                opt.setAttribute('selected', '');
+            } else {
+                opt.removeAttribute('selected');
+            }
+        });
     }
 
-
     const openEditTodoPage = (todoId) => {
-        resetProjectOptions()
-        assignValuesToForm(todoId);
+        setFormHeader('update')
+        resetTodoProjectSelections()
+        // assignValuesToForm(todoId);
+        const todo = projectManager.getTodoById(todoId);
+        populateFormFields(todo)
         showNewTodoPopupForm()
     }
 
@@ -201,48 +155,15 @@ const View = (() => {
         renderContent();
     }
 
-    const handleProjectClick = (e) => {
-        // Remove any project with 'active' class
-        // const activeProjects = document.querySelectorAll('.activeProject')
-        // activeProjects.forEach(elem => elem.classList.remove('activeProject'))
-
-        const activeViews = document.querySelectorAll('.activeView')
-        activeViews.forEach(elem => elem.classList.remove('activeView'))
-
-        // Set current project's class to 'active' (highlights bg)
-        let element = e.srcElement
-        if (element.tagName === 'P') {
-            element = element.parentElement
-        }
-        element.classList.add("activeView")
-        console.log(element);
-
-        // Open current project's todo items in content
-        const projectTitle = element.innerText
-        const projectId = element.getAttribute('projectId')
-        // document.querySelector().
-        const todos = projectManager.getTodosByProjectId(projectId)
-        console.log(`BY ID:`, todos)
-        renderContent()
-    }
-
     const handleViewClick = (e) => {
-        // Remove any project with 'active' class
         let activeViews = document.querySelectorAll('.activeView')
         activeViews.forEach(elem => elem.classList.remove('activeView'))
-
-        // Set current project's class to 'active' (highlights bg)
+        
         let element = e.srcElement
         if (element.tagName === 'P') {
             element = element.parentElement
         }
         element.classList.add("activeView")
-        console.log(element);
-
-        // Check which view is coming from 'event'
-        // Set current view's class to active (highlights bg)
-        // Open current project's todo items in content
-        console.log(e);
         renderContent()
     }
 
@@ -277,7 +198,7 @@ const View = (() => {
         // add new project using projectManager
         projectManager.createNewProject(projectName)
 
-        clearProjectInput()
+        document.querySelector('#projectName').value = ''
         hideProjectInput()
         renderAll()
         initProjectsEventHandlers()
@@ -285,12 +206,31 @@ const View = (() => {
 
     const initProjectsEventHandlers = () => {
         const projectBtns = document.querySelectorAll('.project')
-        projectBtns.forEach(pe => pe.addEventListener('click', handleProjectClick))
+        projectBtns.forEach(pe => pe.addEventListener('click', handleViewClick))
 
         const viewBtns = document.querySelectorAll('.view')
         viewBtns.forEach(v => v.addEventListener('click', handleViewClick))
+
+        const projectRemoveBtns = document.querySelectorAll('.removeProject')
+        projectRemoveBtns.forEach(btn => btn.addEventListener('click', handleProjectRemoveClick))
     }
 
+    const handleProjectRemoveClick = (e) => {
+        e.stopPropagation()
+        const projectId = e.target.getAttribute('projectId')
+        projectManager.removeProjectById(projectId)
+        renderAll()
+        initProjectsEventHandlers()
+    }
+
+    const handleTodoRemoveClick = (e) => {
+        e.stopPropagation()
+        const todoId = e.target.getAttribute('todoId')
+        todoManager.removeTodoById(todoId)
+        renderAll()
+        initTodoEventHandlers()
+        initProjectsEventHandlers()
+    }
     const handleNewProjectDeclineBtn = () => {
         clearProjectInput()
         hideProjectInput()
@@ -298,8 +238,6 @@ const View = (() => {
 
     const showNewTodoPopupForm = () => {
         const popupForm = document.querySelector('.newItemPopup')
-        
-
         popupForm.removeAttribute('style')
         popupForm.classList.remove('hide')
         popupForm.classList.add('show')
@@ -315,7 +253,6 @@ const View = (() => {
     const populateProjectOptions = () => {
         const projectsSelection = document.querySelector('#projectId');
         const projects = projectManager.getAllProjects()
-        console.log(projects);
         projects.forEach(p => {
             const optionElem = document.createElement('option')
             optionElem.value = p.id
@@ -324,17 +261,26 @@ const View = (() => {
         })
 
     }
-    const handleNewTodoClick = () => {
-        const popupTitle = document.querySelector('#popupTitle')
-        popupTitle.innerText = "New todo"
-        const submitBtn = document.querySelector('#submitBtn')
-        submitBtn.innerText = "Add"
-        resetProjectOptions();
-        showNewTodoPopupForm();
-        populateProjectOptions();
+
+    const setFormHeader = (mode='create') => {
+        const popupTitle = document.querySelector('#popupTitle');
+        const submitBtn = document.querySelector('#submitBtn');
+
+        if (mode === 'create') {
+            popupTitle.innerText = 'New todo';
+            submitBtn.innerText = 'Add';
+        } else {
+            popupTitle.innerText = 'Update todo';
+            submitBtn.innerText = 'Modify';
+        }
     }
 
-    
+    const handleNewTodoClick = () => {
+        setFormHeader('create')
+        resetTodoProjectSelections();
+        showNewTodoPopupForm();
+        populateFormFields({})
+    }
 
     const handleNewTodoSubmitBtn = (e) => {  
         e.preventDefault()
@@ -342,15 +288,15 @@ const View = (() => {
         const { todoId, projectId, todoTitle, todoDescription, todoDate } = Object.fromEntries(data.entries());
         if (todoId) {
             projectManager.updateTodo(todoId, todoTitle, todoDescription, todoDate, projectId)
-            
         }else{
-            projectManager.createTodo(todoTitle, todoDescription, todoDate, projectId)
+            todoManager.createTodo(todoTitle, todoDescription, todoDate, projectId)
         }
+        clearForm()
         hideNewTodoPopupForm();
         renderContent()
     }
 
-    const resetProjectOptions = (elem) => {
+    const resetTodoProjectSelections = () => {
         const projectOptions = document.querySelector('#projectId')
         const placeholderOption = document.createElement('option')
         placeholderOption.innerText = 'Select project'
@@ -365,8 +311,7 @@ const View = (() => {
     const clearForm = () => {
         const form = document.querySelector('.formItems')
         form.reset()
-        const projectsSelection = document.querySelector('#projectId');
-        resetProjectOptions(projectsSelection)
+        resetTodoProjectSelections()
     }
 
     const handleNewTodoCancelBtn = () => {  
@@ -374,8 +319,15 @@ const View = (() => {
         hideNewTodoPopupForm()
     }
 
+    const handleCompletedStateChange = (e) => {
+        const todoId = e.target.getAttribute('todoId')
+        const checked = e.target.checked
+        projectManager.updateTodoCompleteState(todoId, checked)
+    }
+
     const initEventHandlers = () => {
         initProjectsEventHandlers()
+        initTodoEventHandlers()
 
         const sidebar = document.querySelector('.sidebar')
 
@@ -401,6 +353,8 @@ const View = (() => {
 
         const newProjectdeclineBtn = document.querySelector('.decline')
         newProjectdeclineBtn.addEventListener('click', handleNewProjectDeclineBtn)
+
+        
     }
 
     const init = () => {
@@ -413,4 +367,3 @@ const View = (() => {
 })()
 
 export default View;
-
